@@ -1,0 +1,5 @@
+{
+    "name": "Atmel Build Action",
+    "description": "Revolve NTNU Action Template for Atmel Studio builds",
+    "iconName": "atmel-icon"
+}
