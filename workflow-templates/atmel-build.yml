@@ -1,0 +1,16 @@
+name: atmel-build
+
+on:
+  push:
+    branches: [$default-branch]
+  pull:
+    branches: [$default-branch]
+
+jobs:
+  build:
+    runs-on: [self-hosted, Windows]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Atmel Project
+      - run: C:\"Program Files (x86)"\Atmel\Studio\7.0\AtmelStudio.exe ${{github.repository}}\src\$env:SOLUTION_NAME.atsln /build debug /out log.txt
