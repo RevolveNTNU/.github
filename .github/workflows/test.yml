@@ -1,0 +1,45 @@
+name: markdown check compliance 
+on:
+  repository_dispatch:
+    types: [org-workflow-bot]  
+   
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: SvanBoxel/organization-workflow@main
+      with:
+        id: ${{ github.event.client_payload.id }}
+        callback_url: ${{ github.event.client_payload.callback_url }}
+        sha: ${{ github.event.client_payload.sha }}
+        run_id: ${{ github.run_id }}
+        name: ${{ env.name || github.workflow }}
+
+  build:
+    name: Submodule update
+    runs-on: ubuntu-latest
+    env:
+      PARENT_REPOSITORY: 'RevolveNTNU/rdv_pipeline'
+      CHECKOUT_BRANCH: 'test/github-action-update-submodule'
+      PR_AGAINST_BRANCH: 'dev/dynamics_simulator/878/integrate-tv-vd-sim'
+      OWNER: 'RevolveNTNU'
+
+    steps:
+      ##########################
+      # Checkout the code base #
+      ##########################
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      ####################################
+      # Run the action against code base #
+      ####################################
+      - name: run action
+        id: run_action
+        uses: releasehub-com/github-action-create-pr-parent-submodule@v1
+        with:
+          github_token: ${{ github.event.client_payload.token }}
+          parent_repository: ${{ env.PARENT_REPOSITORY }}
+          checkout_branch: ${{ env.CHECKOUT_BRANCH}}
+          pr_against_branch: ${{ env.PR_AGAINST_BRANCH }}
+          owner: ${{ env.OWNER }}
