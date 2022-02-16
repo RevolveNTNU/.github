@@ -1,6 +1,3 @@
-include:
-  repositories:
-  - 'TV_VD_SIM'  
 
 exclude:
   repositories:
